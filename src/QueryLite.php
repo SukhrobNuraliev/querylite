@@ -3,6 +3,7 @@
 namespace QueryLite;
 
 use QueryLite\Core\SchemaBuilder;
+use QueryLite\Core\QuerySelector;
 
 class QueryLite
 {
@@ -34,6 +35,13 @@ class QueryLite
         return $this->dynamicTable;
     }
 
+    /**
+     * @throws QueryException
+     */
+    public function select(array|string $columns = '*'): QuerySelector
+    {
+        return (new QuerySelector($this->getTable(), $this->connection))->columns($columns);
+    }
 
     /**
      * @throws QueryException
@@ -44,6 +52,37 @@ class QueryLite
         return new QueryFetcher($sth);
     }
 
+    /**
+     * @throws QueryException
+     */
+    public function find(string $primaryKeyValue): bool|array
+    {
+        return $this->select()->whereEqual(static::PRIMARY_KEY, $primaryKeyValue)->getFirstRow();
+    }
+
+    /**
+     * @throws QueryException
+     */
+    public function max(string $column = self::PRIMARY_KEY): int
+    {
+        return (int)$this->select('MAX(' . $column . ')')->getFirstValue();
+    }
+
+    /**
+     * @throws QueryException
+     */
+    public function min(string $column = self::PRIMARY_KEY): int
+    {
+        return (int)$this->select('MIN(' . $column . ')')->getFirstValue();
+    }
+
+    /**
+     * @throws QueryException
+     */
+    public function sum(string $column): int
+    {
+        return (int)$this->select('SUM(' . $column . ')')->getFirstValue();
+    }
 
     /**
      * @throws QueryException
