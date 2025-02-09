@@ -4,6 +4,14 @@ QueryLite is a **fast**, **lightweight**, and **easy-to-use** database query bui
 
 ---
 
+## Installation
+
+Install the package via Composer:
+
+```bash
+composer require sukhrobnurali/querylite
+```
+
 ## 📌 Example Usage
 
 ### **1️⃣ Define a Model**
